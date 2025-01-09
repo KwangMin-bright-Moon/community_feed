@@ -6,10 +6,41 @@ public class User {
 
     private final Long id;
     private final UserInfo info;
+    private final UserRelationCounter followerCounter;
+    private final UserRelationCounter followingCounter;
+
 
     public User(Long id, UserInfo userInfo) {
         this.id = id;
         this.info = userInfo;
+        this.followerCounter = new UserRelationCounter();
+        this.followingCounter = new UserRelationCounter();
+    }
+
+    public void follow(User targetUser) {
+        if (this.equals(targetUser)) {
+            throw new IllegalArgumentException();
+        }
+
+        followingCounter.increase();
+        targetUser.increaseFollowerCount();
+    }
+
+    public void unfollow(User targetUser) {
+        if (this.equals(targetUser)) {
+            throw new IllegalArgumentException();
+        }
+
+        followingCounter.decrease();
+        targetUser.decreaseFollowerCount();
+    }
+
+    private void increaseFollowerCount(){
+        followingCounter.increase();
+    }
+
+    private void decreaseFollowerCount(){
+        followingCounter.decrease();
     }
 
     @Override

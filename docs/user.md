@@ -18,3 +18,21 @@
 5. 팔로잉 유저 카운트 변경 // Domain
 6. 팔로우 여부 저장 및 유저 변경 사항 저장 // Repository
 
+유저가 카운터를 증가시키고 감소시키는 로직을 수행하기 보다는
+나중에 재사용할 수 있도록 userRelationCounter 라는 vo를 생성해서
+책임을 위임해도 좋겠다.
+
+
+```java
+ public void follow(User targetUser) {
+        if (this.equals(targetUser)) {
+            throw new IllegalArgumentException();
+        }
+
+        followingCounter.increase();
+        targetUser.followerCounter.increase();
+    }
+```
+객체 지향 생활체조의 디미터의 법칙에서는 친구하고만 대화하라는 말이 있다.
+자신의 소유 객체하고만 대화해야하지 그 내부 속 까지 들여다 보면서 대화하면
+캡슐화가 깨지는 문제가 발생
